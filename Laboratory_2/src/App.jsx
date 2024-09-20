@@ -1,5 +1,9 @@
 import { useState } from 'react';
 import './App.css';
+import SearchInput from './components/SearchInput';
+import ToDoTable from './components/ToDoTable';
+import AddToDoForm from './components/AddToDoForm';
+import PageTitle from './components/PageTitle';
 
 function App() {
   const [title, setTitle] = useState('');
@@ -30,57 +34,12 @@ function App() {
     setToDoList((prev) => prev.filter((x) => x.id !== id));
   };
 
-  const filteredToDoList = toDoList.filter((todo) =>
-    todo.title.toLowerCase().includes(search.toLowerCase())
-  );
-
   return (
     <div className="container">
-      <div className="search-container">
-        <input
-          type="text"
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-          placeholder="Search..."
-        />
-      </div>
-
-      <form className="form-container" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={title}
-          onChange={(event) => setTitle(event.target.value)}
-          placeholder="Add a new todo..."
-        />
-        <button type="submit">Add</button>
-      </form>
-
-      <table className="todo-table">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Title</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredToDoList.length > 0 ? (
-            filteredToDoList.map((todo) => (
-              <tr key={todo.id}>
-                <td>{todo.id}</td>
-                <td>{todo.title}</td>
-                <td>
-                  <button onClick={() => handleDelete(todo.id)}>Remove</button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="3">No Data</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      <PageTitle title="TODO App" />
+      <SearchInput searchValue={search} setSearch={setSearch} />
+      <AddToDoForm title={title} setTitle={setTitle} onSubmit={handleSubmit} />
+      <ToDoTable toDoList={toDoList} onDelete={handleDelete} search={search} />
     </div>
   );
 }
