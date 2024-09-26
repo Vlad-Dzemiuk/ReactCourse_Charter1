@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 const useGetAllToDo = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -17,6 +17,7 @@ const useGetAllToDo = () => {
   return {
     isLoading,
     data,
+    setData,
   };
 };
 

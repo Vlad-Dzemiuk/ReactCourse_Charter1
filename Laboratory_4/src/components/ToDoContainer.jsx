@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SearchInput from "./SearchInput";
 import ToDoTable from "./ToDoTable";
 import AddToDoForm from "./AddToDoForm";
@@ -7,14 +7,7 @@ import useGetAllToDo from "../hooks/useGetAllToDo";
 const ToDoContainer = () => {
   const [title, setTitle] = useState("");
   const [search, setSearch] = useState("");
-  const [toDoList, setToDoList] = useState([]);
-  const { data, isLoading } = useGetAllToDo();
-
-  useEffect(() => {
-    if (data) {
-      setToDoList(data);
-    }
-  }, [data]);
+  const { data, setData, isLoading } = useGetAllToDo();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -23,7 +16,7 @@ const ToDoContainer = () => {
       return;
     }
 
-    setToDoList((prev) => {
+    setData((prev) => {
       return [
         ...prev,
         {
@@ -37,7 +30,7 @@ const ToDoContainer = () => {
   };
 
   const handleDelete = (id) => {
-    setToDoList((prev) => prev.filter((x) => x.id !== id));
+    setData((prev) => prev.filter((x) => x.id !== id));
   };
 
   return (
@@ -47,11 +40,7 @@ const ToDoContainer = () => {
       {isLoading ? (
         <p>Loading...</p>
       ) : (
-        <ToDoTable
-          toDoList={toDoList}
-          onDelete={handleDelete}
-          search={search}
-        />
+        <ToDoTable toDoList={data} onDelete={handleDelete} search={search} />
       )}
     </div>
   );
